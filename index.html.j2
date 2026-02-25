@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>AWX Managed Server</title>
+</head>
+<body>
+    <h1>Server managed by AWX</h1>
+    <p>Hostname: {{ ansible_hostname }}</p>
+    <p>IP Address: {{ ansible_default_ipv4.address }}</p>
+    <p>Deployment successful!</p>
+    <p>IP Address: {{ ansible_default_ipv4.address }}</p>
+    <p>{{ custom_message }}</p>
+</body>
+</html>
