@@ -1,0 +1,49 @@
+---
+- name: Full AWX End-to-End Test
+  hosts: all
+  become: yes
+
+  vars:
+    test_file: /tmp/awx_test.txt
+
+  tasks:
+
+    - name: Gather system info
+      ansible.builtin.debug:
+        msg: "Hostname is {{ ansible_hostname }} and IP is {{ ansible_default_ipv4.address }}"
+
+    - name: Create test file
+      ansible.builtin.copy:
+        dest: "{{ test_file }}"
+        content: |
+          AWX Test Successful
+          Host: {{ ansible_hostname }}
+          Date: {{ ansible_date_time.date }}
+        mode: '0644'
+
+    - name: Verify file exists
+      ansible.builtin.stat:
+        path: "{{ test_file }}"
+      register: file_check
+
+    - name: Show file status
+      ansible.builtin.debug:
+        var: file_check.stat.exists
+
+    - name: Run a test command
+      ansible.builtin.command: uptime
+      register: uptime_output
+
+    - name: Show uptime
+      ansible.builtin.debug:
+        var: uptime_output.stdout
+
+    - name: Check nginx service status
+      ansible.builtin.systemd:
+        name: nginx
+      register: nginx_status
+
+    - name: Display nginx status
+      ansible.builtin.debug:
+        var: nginx_status.status.ActiveState
+
