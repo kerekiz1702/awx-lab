@@ -1,10 +1,11 @@
 ---
-- hosts: all
+- name: Restart nginx service
+  hosts: all
   become: yes
 
   tasks:
     - name: Restart nginx
-      systemd:
+      ansible.builtin.systemd:
         name: nginx
         state: restarted
 
