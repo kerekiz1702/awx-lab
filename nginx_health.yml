@@ -1,0 +1,20 @@
+---
+- name: Nginx Health Check
+  hosts: Test
+  become: yes
+
+  tasks: 
+    - name: Check nginx service state
+      asnible.builtin.systemd:
+        name: nginx
+      register: ngnix_status
+    
+    - name: Show status
+      ansible.builtin.debug:
+        var: nginx_status.status.ActiveState
+    
+    - name: Fail of nginx not running
+      ansible.bulitin.fail:
+        msg: "Hginx is not running"
+      when: nginx_status.status.ActiveState != "active"
+      
