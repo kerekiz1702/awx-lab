@@ -4,6 +4,11 @@
   become: yes
 
   tasks:
+    - name: Check nginx status
+      ansible.builtin.command: systemctl status nginx
+      register: nginx_status
+      ignore_errors: yes
+
     - name: Restart nginx
       ansible.builtin.systemd:
         name: nginx
